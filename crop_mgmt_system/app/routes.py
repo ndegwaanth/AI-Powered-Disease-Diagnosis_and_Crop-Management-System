@@ -4,6 +4,13 @@ from .models import User
 from .forms import Registration, LoginForm
 from flask_login import LoginManager, login_user, logout_user, login_required, login_remembered, current_user
 from flask_session import Session
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import numpy as np
+import io
+from .labels import class_labels
+from sklearn.metrics import classification_report, confusion_matrix
+import pandas as pd
 
 
 main_bp = Blueprint('main', __name__)
@@ -24,7 +31,7 @@ def logout():
     flash("You have been logged out successfully.")
     return redirect(url_for('main.login'))
 
-@main_bp.route('/homepage')
+@main_bp.route('/AI-Powered-Disease-Diagnosis_and_Crop-Management-System/crop/mgmts')
 def homepage():
     return render_template('homepage.html')
 
@@ -104,3 +111,58 @@ def login():
             return redirect(url_for('main.homepage'))
     
     return render_template('login.html', form=form)
+
+
+# Assuming you already have your model and class labels loaded
+model = load_model("machine_models/cnn_model.h5")
+
+@main_bp.route("/crop/prediction", methods=["GET", "POST"])
+def predict():
+    predicted_class = None  # Initialize variable
+    metrics = None
+    confusion = None
+
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file uploaded", "danger")
+            return render_template("homepage.html", prediction=None, metrics=None, confusion=None)
+
+        file = request.files["file"]
+
+        if file.filename == "":
+            flash("No selected file", "danger")
+            return render_template("homepage.html", prediction=None, metrics=None, confusion=None)
+
+        try:
+            # Read image file as a PIL Image
+            img = image.load_img(io.BytesIO(file.read()), target_size=(224, 224))
+
+            # Normalize image
+            img_array = image.img_to_array(img) / 255.0
+
+            # Reshape for model
+            img_array = np.expand_dims(img_array, axis=0)
+
+            # Make prediction
+            prediction = model.predict(img_array)
+            predicted_class = class_labels[np.argmax(prediction)]  # Get class label
+
+            # Metrics Calculation (if you have ground truth for a sample to compare with)
+            # Assuming you have ground truth labels for this prediction (like in a batch, for example)
+            true_label = ...  # Obtain the true label for comparison, e.g., from a database or predefined set
+            
+            # Classification report (precision, recall, f1-score)
+            y_pred = np.argmax(prediction, axis=1)
+            y_true = np.array([true_label])  # True label should be in a comparable format
+            report = classification_report(y_true, y_pred, target_names=class_labels)
+
+            # Confusion Matrix
+            confusion = confusion_matrix(y_true, y_pred)
+
+            flash(f"Prediction: {predicted_class}", "success")
+            metrics = pd.DataFrame.from_dict(classification_report(y_true, y_pred, target_names=class_labels, output_dict=True)).T
+
+        except Exception as e:
+            flash(f"Error processing image: {str(e)}", "danger")
+
+    return render_template("result.html", prediction=predicted_class, metrics=metrics, confusion=confusion)

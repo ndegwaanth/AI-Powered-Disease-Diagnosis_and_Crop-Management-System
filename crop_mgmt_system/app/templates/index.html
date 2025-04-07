@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropGuard | AI-Powered Crop Disease Diagnosis</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/index.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf me-2"></i>CropGuard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#testimonials">Testimonials</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-light" href="{{ url_for('main.register') }}">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">Protect Your Crops with AI-Powered Diagnosis</h1>
+                    <p class="lead mb-4">Upload a photo of your affected crop and get instant disease identification with treatment recommendations from our advanced machine learning system.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#diagnose" class="btn btn-primary btn-lg px-4">Diagnose Now</a>
+                        <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="../static/images/Crop_guard_2.jpeg.jpeg" alt="Farmer using CropGuard" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Features Section -->
+    <section id="features" class="features-section py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Powerful Features for Farmers</h2>
+                <p class="lead text-muted">Everything you need to protect your crops and maximize yield</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-4">
+                                <i class="fas fa-camera fa-2x"></i>
+                            </div>
+                            <h5>Image Diagnosis</h5>
+                            <p class="text-muted">Upload photos of affected crops and get instant disease identification with our AI model.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-4">
+                                <i class="fas fa-book-medical fa-2x"></i>
+                            </div>
+                            <h5>Treatment Guide</h5>
+                            <p class="text-muted">Detailed treatment recommendations including organic and chemical solutions.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-info bg-opacity-10 text-info rounded-circle mx-auto mb-4">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                            <h5>Farmer Community</h5>
+                            <p class="text-muted">Connect with other farmers to share experiences and get advice.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="feature-icon bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-4">
+                                <i class="fas fa-map-marker-alt fa-2x"></i>
+                            </div>
+                            <h5>Agro-Vet Locator</h5>
+                            <p class="text-muted">Find nearby agricultural veterinarians and suppliers with our integrated map.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">How CropGuard Works</h2>
+                <p class="lead text-muted">Simple steps to protect your crops</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-card text-center">
+                        <div class="step-number">1</div>
+                        <h4 class="mt-3">Upload Image</h4>
+                        <p>Take a clear photo of the affected crop part (leaf, stem, fruit) and upload it to our system.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="step-card text-center">
+                        <div class="step-number">2</div>
+                        <h4 class="mt-3">AI Analysis</h4>
+                        <p>Our advanced CNN model analyzes the image to identify potential diseases with high accuracy.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="step-card text-center">
+                        <div class="step-number">3</div>
+                        <h4 class="mt-3">Get Results</h4>
+                        <p>Receive detailed diagnosis, treatment options, and preventive measures for your crops.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">What Farmers Say</h2>
+                <p class="lead text-muted">Trusted by thousands of farmers worldwide</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="testimonial-card text-center p-4">
+                                    <img src="../static/images/John.jpeg" alt="Farmer" class="rounded-circle mb-3" width="100">
+                                    <p class="lead mb-4">"CropGuard saved my tomato farm from blight last season. The accurate diagnosis and treatment recommendations were spot on!"</p>
+                                    <h5>John Kamau</h5>
+                                    <p class="text-muted">Tomato Farmer, Nakuru</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card text-center p-4">
+                                    <img src="../static/images/mary.jpeg" alt="Farmer" class="rounded-circle mb-3" width="100">
+                                    <p class="lead mb-4">"The community forum is invaluable. I've learned so much from other farmers dealing with similar issues."</p>
+                                    <h5>Mary Wanjiku</h5>
+                                    <p class="text-muted">Maize Farmer, Eldoret</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="testimonial-card text-center p-4">
+                                    <img src="../static/images/David.jpeg" alt="Farmer" class="rounded-circle mb-3" width="100">
+                                    <p class="lead mb-4">"The agro-vet locator helped me find supplies quickly when I needed them most. This app is a game-changer!"</p>
+                                    <h5>David Ochieng</h5>
+                                    <p class="text-muted">Coffee Farmer, Kericho</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section py-5 bg-success text-white">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4">Ready to Protect Your Crops?</h2>
+            <p class="lead mb-5">Join thousands of farmers using CropGuard to maximize their yields and minimize losses</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('main.register') }}" class="btn btn-light btn-lg px-4">Get Started Free</a>
+                <a href="#diagnose" class="btn btn-outline-light btn-lg px-4">Try Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer py-5 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5><i class="fas fa-leaf me-2"></i>CropGuard</h5>
+                    <p class="mt-3">AI-powered crop disease diagnosis and management system for modern farmers.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                        <li class="mb-2"><a href="#features" class="text-white text-decoration-none">Features</a></li>
+                        <li class="mb-2"><a href="#how-it-works" class="text-white text-decoration-none">How It Works</a></li>
+                        <li class="mb-2"><a href="#testimonials" class="text-white text-decoration-none">Testimonials</a></li>
+                        <li><a href="{{ url_for('main.login') }}" class="text-white text-decoration-none">Login</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5>Resources</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Blog</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">FAQs</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Support</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Nairobi, Kenya</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +254 700 000000</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@cropguard.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small mb-0">&copy; 2023 CropGuard. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="small mb-0">Made with <i class="fas fa-heart text-danger"></i> for farmers</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="static/js/index.js"></script>
+</body>
+</html>
