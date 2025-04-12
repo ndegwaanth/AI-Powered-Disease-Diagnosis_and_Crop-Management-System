@@ -174,3 +174,4 @@ cython_debug/
 .pypirc
 *.h5
 crop_mgmt_system/machine_models/cnn_model.h5
+crop_mgmt_system/machine_models/cnn_model.h5
