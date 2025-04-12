@@ -9,12 +9,21 @@ from pymongo import MongoClient
 from flask_session import Session
 from datetime import timedelta
 from .models import User
+import base64
+import logging
 
 # Load environment variables
 load_dotenv()
 
+
 # Create Flask app
 app = Flask(__name__, template_folder="templates")
+
+@app.template_filter('b64encode')
+def b64encode_filter(data):
+    if data is None:
+        return ''
+    return base64.b64encode(data).decode('utf-8')
 
 # Essential configuration
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', secrets.token_hex(32))
@@ -34,6 +43,11 @@ app.config.update({
     'PERMANENT_SESSION_LIFETIME': timedelta(days=1)
 })
 
+logging.basicConfig(level=logging.INFO)
+app.logger.setLevel(logging.INFO)
+handler = logging.FileHandler('app.log')
+handler.setLevel(logging.INFO)
+app.logger.addHandler(handler)
 
 # Initialize extensions in correct order
 csrf = CSRFProtect(app)
@@ -44,6 +58,7 @@ Mongo_url = os.getenv("MONGODB")
 client = MongoClient(Mongo_url)
 db = client['Users']
 collection = db['users-info']
+agro_vets = db['agro_vet_info']
 
 bcrypt = Bcrypt(app)
 

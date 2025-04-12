@@ -202,80 +202,17 @@ body {
     border-radius: 50px;
 }
 
-/* Add these rules to your existing homepage.css */
-
-/* File Input Styling */
-#fileInput {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+.spinner-border {
+    vertical-align: middle;
+    margin-right: 5px;
 }
 
-/* Upload Area States */
-.upload-area.highlight {
-    border-color: var(--primary);
-    background-color: rgba(40, 167, 69, 0.1);
+#analyzeBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }
 
-/* Preview Area Styling */
-#previewArea {
-    transition: all 0.3s ease;
-}
-
-#previewArea img {
-    max-height: 300px;
-    max-width: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-}
-
-/* Button Styling for Upload */
-#browseBtn, #analyzeBtn, #cancelBtn {
-    transition: all 0.2s ease;
-}
-
-#browseBtn:hover, #analyzeBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#cancelBtn:hover {
-    background-color: #f8f9fa;
-}
-
-/* Loading State */
-.btn-loading {
-    position: relative;
-    pointer-events: none;
-}
-
-.btn-loading::after {
-    content: "";
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    border: 3px solid transparent;
-    border-top-color: #ffffff;
-    border-radius: 50%;
-    animation: button-loading-spinner 1s ease infinite;
-}
-
-@keyframes button-loading-spinner {
-    from {
-        transform: rotate(0turn);
-    }
-    to {
-        transform: rotate(1turn);
-    }
+#cancelBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
 }

@@ -12,6 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="static/css/homepage.css">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
     <!-- Navigation Sidebar -->
@@ -25,37 +27,37 @@
             <div class="sidebar-menu">
                 <ul class="nav flex-column">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ url_for('main.dashboard') }}">
                             <i class="fas fa-home me-2"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/diagnose">
+                        <a class="nav-link" href="{{ url_for('main.diagnose') }}">
                             <i class="fas fa-camera me-2"></i> Diagnose
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/history">
+                        <a class="nav-link" href="{{ url_for('main.history') }}">
                             <i class="fas fa-history me-2"></i> History
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/forum">
+                        <a class="nav-link" href="{{ url_for('main.forum') }}">
                             <i class="fas fa-users me-2"></i> Community
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/vets">
+                        <a class="nav-link" href="{{ url_for('main.vets') }}">
                             <i class="fas fa-map-marker-alt me-2"></i> Agro-Vets
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/alerts">
+                        <a class="nav-link" href="{{ url_for('main.alerts') }}">
                             <i class="fas fa-bell me-2"></i> Alerts
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile">
+                        <a class="nav-link" href="{{ url_for('main.profile') }}">
                             <i class="fas fa-user me-2"></i> Profile
                         </a>
                     </li>
@@ -65,7 +67,7 @@
                 <div class="user-info d-flex align-items-center">
                     <img src="static/images/user-avatar.jpg" alt="User" class="rounded-circle me-2" width="40">
                     <div>
-                        <h6 class="mb-0">John Farmer</h6>
+                        <h6 class="mb-0">{{ current_user.username }}</h6>
                         <small class="text-white-50">Nakuru County</small>
                     </div>
                 </div>
@@ -133,7 +135,7 @@
                                     </div>
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-center" href="/alerts">View all</a>
+                                <a class="dropdown-item text-center" href="{{ url_for('main.alerts') }}">View all</a>
                             </div>
                         </li>
                     </ul>
@@ -148,8 +150,8 @@
                         <div class="welcome-banner bg-success text-white p-4 rounded-3">
                             <div class="row align-items-center">
                                 <div class="col-md-8">
-                                    <h2>Welcome back, John!</h2>
-                                    <p class="mb-0">You have 3 active alerts and 2 pending diagnoses. Current weather in Nakuru: Sunny, 24°C</p>
+                                    <h2>Welcome back, {{ current_user.username }}</h2>
+                                    <!-- <p class="mb-0">You have 3 active alerts and 2 pending diagnoses. Current weather in Nakuru: Sunny, 24°C</p> -->
                                 </div>
                                 <div class="col-md-4 text-md-end">
                                     <a href="/diagnose" class="btn btn-light">
@@ -176,7 +178,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-lg-3">
-                                <a href="/forum" class="quick-action-card bg-info text-white">
+                                <a href="{{ url_for('main.forum') }}" class="quick-action-card bg-info text-white">
                                     <div class="icon">
                                         <i class="fas fa-users"></i>
                                     </div>
@@ -185,7 +187,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-lg-3">
-                                <a href="/vets" class="quick-action-card bg-warning text-white">
+                                <a href="{{url_for('main.vets')}}" class="quick-action-card bg-warning text-white">
                                     <div class="icon">
                                         <i class="fas fa-map-marker-alt"></i>
                                     </div>
@@ -194,7 +196,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-lg-3">
-                                <a href="/history" class="quick-action-card bg-secondary text-white">
+                                <a href="{{ url_for('main.history') }}" class="quick-action-card bg-secondary text-white">
                                     <div class="icon">
                                         <i class="fas fa-history"></i>
                                     </div>
@@ -214,50 +216,53 @@
                                 <h5 class="mb-0">Diagnose Crop Disease</h5>
                             </div>
                             <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-lg-6">
-                                        <div class="upload-area p-5 text-center" id="uploadArea">
-                                            <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
-                                            <h5>Drag & Drop Your Image Here</h5>
-                                            <p class="text-muted">or</p>
-                                            <button class="btn btn-primary" id="browseBtn">Browse Files</button>
-                                            <input type="file" id="fileInput" name="file" accept="image/*" style="display: none;">
-                                            <p class="small text-muted mt-2">Supports: JPG, PNG (Max 5MB)</p>
+                                <form id="diagnoseForm" action="/diagnose/crop/disease/" method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-6">
+                                            <div class="upload-area p-5 text-center" id="uploadArea">
+                                                <i class="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                                                <h5>Drag & Drop Your Image Here</h5>
+                                                <p class="text-muted">or</p>
+                                                <button type="button" class="btn btn-primary" id="browseBtn">Browse Files</button>
+                                                <input type="file" id="fileInput" accept="image/*" style="display: none;" name="file">
+                                                <p class="small text-muted mt-2">Supports: JPG, PNG (Max 5MB)</p>
+                                            </div>
+                                            <div class="preview-area d-none p-5 text-center" id="previewArea">
+                                                <img id="imagePreview" src="#" alt="Preview" class="img-thumbnail mb-4" style="max-height: 300px;">
+                                                <div class="d-flex justify-content-center gap-3">
+                                                    <button type="button" class="btn btn-outline-secondary" id="cancelBtn">Cancel</button>
+                                                    <button type="button" class="btn btn-success" id="analyzeBtn">Analyze Image</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="preview-area d-none p-5 text-center" id="previewArea">
-                                            <img id="imagePreview" src="#" alt="Preview" class="img-thumbnail mb-4" style="max-height: 300px;">
-                                            <div class="d-flex justify-content-center gap-3">
-                                                <button class="btn btn-outline-secondary" id="cancelBtn">Cancel</button>
-                                                <button class="btn btn-success" id="analyzeBtn">Analyze Image</button>
+                                        <div class="col-lg-6">
+                                            <h5 class="mb-3">How to take good photos:</h5>
+                                            <ul class="list-group list-group-flush mb-4">
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <i class="fas fa-check-circle text-success me-3"></i>
+                                                    <span>Take photos in natural daylight</span>
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <i class="fas fa-check-circle text-success me-3"></i>
+                                                    <span>Focus on affected leaves or fruits</span>
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <i class="fas fa-check-circle text-success me-3"></i>
+                                                    <span>Include both close-up and full plant shots</span>
+                                                </li>
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <i class="fas fa-check-circle text-success me-3"></i>
+                                                    <span>Ensure the image is clear and not blurry</span>
+                                                </li>
+                                            </ul>
+                                            <div class="alert alert-info">
+                                                <i class="fas fa-info-circle me-2"></i>
+                                                For best results, upload multiple photos showing different angles of the affected area.
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <h5 class="mb-3">How to take good photos:</h5>
-                                        <ul class="list-group list-group-flush mb-4">
-                                            <li class="list-group-item d-flex align-items-center">
-                                                <i class="fas fa-check-circle text-success me-3"></i>
-                                                <span>Take photos in natural daylight</span>
-                                            </li>
-                                            <li class="list-group-item d-flex align-items-center">
-                                                <i class="fas fa-check-circle text-success me-3"></i>
-                                                <span>Focus on affected leaves or fruits</span>
-                                            </li>
-                                            <li class="list-group-item d-flex align-items-center">
-                                                <i class="fas fa-check-circle text-success me-3"></i>
-                                                <span>Include both close-up and full plant shots</span>
-                                            </li>
-                                            <li class="list-group-item d-flex align-items-center">
-                                                <i class="fas fa-check-circle text-success me-3"></i>
-                                                <span>Ensure the image is clear and not blurry</span>
-                                            </li>
-                                        </ul>
-                                        <div class="alert alert-info">
-                                            <i class="fas fa-info-circle me-2"></i>
-                                            For best results, upload multiple photos showing different angles of the affected area.
-                                        </div>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -407,6 +412,318 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Custom JS -->
-    <script src="static/js/homepage.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Bootstrap tooltips
+            initTooltips();
+            
+            // Initialize sidebar toggle functionality
+            initSidebarToggle();
+            
+            // Initialize disease trends chart if element exists
+            initDiseaseTrendsChart();
+            
+            // Initialize file upload functionality if elements exist
+            initFileUpload();
+        });
+
+        function initTooltips() {
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function(tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+
+        function initSidebarToggle() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (sidebarToggle && sidebar && mainContent) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                    mainContent.classList.toggle('active');
+                });
+            }
+        }
+
+        function initDiseaseTrendsChart() {
+            const ctx = document.getElementById('diseaseTrendsChart')?.getContext('2d');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Tomato Blight',
+                            data: [12, 19, 15, 27, 34, 42],
+                            borderColor: '#dc3545',
+                            backgroundColor: 'rgba(220, 53, 69, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Maize Rust',
+                            data: [8, 12, 18, 21, 25, 30],
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        },
+                        {
+                            label: 'Potato Late Blight',
+                            data: [5, 9, 14, 16, 22, 28],
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.3,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Cases Reported'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initFileUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const previewArea = document.getElementById('previewArea');
+            const fileInput = document.getElementById('fileInput');
+            const browseBtn = document.getElementById('browseBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const imagePreview = document.getElementById('imagePreview');
+
+            // Exit if any required elements are missing
+            if (!uploadArea || !previewArea || !fileInput || !browseBtn || !cancelBtn || !analyzeBtn || !imagePreview) {
+                return;
+            }
+
+            // Setup drag and drop events
+            setupDragAndDrop(uploadArea);
+            
+            // Browse button click handler
+            browseBtn.addEventListener('click', () => fileInput.click());
+            
+            // File input change handler
+            fileInput.addEventListener('change', () => handleFileSelection(fileInput.files));
+            
+            // Cancel button handler
+            cancelBtn.addEventListener('click', resetFileUpload);
+            
+            // Analyze button handler
+            analyzeBtn.addEventListener('click', analyzeImage);
+
+            function setupDragAndDrop(element) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    element.addEventListener(eventName, preventDefaults, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    element.addEventListener(eventName, highlight, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    element.addEventListener(eventName, unhighlight, false);
+                });
+
+                element.addEventListener('drop', handleDrop, false);
+            }
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight() {
+                uploadArea.classList.add('highlight');
+            }
+
+            function unhighlight() {
+                uploadArea.classList.remove('highlight');
+            }
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFileSelection(files);
+            }
+
+            function handleFileSelection(files) {
+                if (!files.length) return;
+
+                const file = files[0];
+                const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                
+                if (!validImageTypes.includes(file.type)) {
+                    showAlert('Please select a valid image file (JPG, PNG)');
+                    return;
+                }
+
+                if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                    showAlert('File size exceeds 5MB limit');
+                    return;
+                }
+
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    uploadArea.classList.add('d-none');
+                    previewArea.classList.remove('d-none');
+                };
+                
+                reader.onerror = function() {
+                    showAlert('Error reading file. Please try again.');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            function resetFileUpload() {
+                fileInput.value = '';
+                imagePreview.src = '#';
+                previewArea.classList.add('d-none');
+                uploadArea.classList.remove('d-none');
+            }
+
+            function setLoadingState(isLoading) {
+                const analyzeBtn = document.getElementById('analyzeBtn');
+                const cancelBtn = document.getElementById('cancelBtn');
+                
+                if (isLoading) {
+                    // Disable buttons and show loading state
+                    analyzeBtn.disabled = true;
+                    cancelBtn.disabled = true;
+                    analyzeBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Analyzing...';
+                } else {
+                    // Re-enable buttons and restore original text
+                    analyzeBtn.disabled = false;
+                    cancelBtn.disabled = false;
+                    analyzeBtn.innerHTML = 'Analyze Image';
+                }
+            }
+
+            function analyzeImage() {
+                if (!fileInput.files.length) {
+                    showAlert('Please select an image first');
+                    return;
+                }
+
+                setLoadingState(true);
+                
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                formData.append('csrf_token', document.querySelector('input[name="csrf_token"]').value);
+                
+                fetch('/diagnose/crop/disease/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': document.querySelector('input[name="csrf_token"]').value
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'error') {
+                        throw new Error(data.message);
+                    }
+                    
+                    // Store the diagnosis data in sessionStorage
+                    sessionStorage.setItem('diagnosisData', JSON.stringify({
+                        disease: data.disease,
+                        confidence: data.confidence,
+                        treatments: data.treatments,
+                        preventions: data.preventions,
+                        image_data: data.image_data
+                    }));
+                    
+                    // Redirect to the diagnose page
+                    window.location.href = '/diagnose';
+                })
+                .catch(error => {
+                    console.error('Diagnosis error:', error);
+                    showAlert(error.message || 'Error processing image. Please try again.');
+                })
+                .finally(() => {
+                    setLoadingState(false);
+                });
+            }
+            function displayDiagnosisResults(data) {
+                // Create a form to submit results to the results page
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/diagnose/results';
+                
+                // Add hidden inputs with all diagnosis data
+                const addInput = (name, value) => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = name;
+                    input.value = value;
+                    form.appendChild(input);
+                };
+                
+                addInput('disease', data.disease);
+                addInput('confidence', data.confidence);
+                addInput('image_data', data.image_data);
+                addInput('treatments', JSON.stringify(data.treatments));
+                addInput('preventions', JSON.stringify(data.preventions));
+                addInput('csrf_token', document.querySelector('input[name="csrf_token"]').value);
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+            
+            function showAlert(message) {
+                // Create a more user-friendly error display
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+                alertDiv.style.top = '20px';
+                alertDiv.style.right = '20px';
+                alertDiv.style.zIndex = '9999';
+                alertDiv.style.maxWidth = '400px';
+                alertDiv.innerHTML = `
+                    <strong>Error!</strong> ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                
+                document.body.appendChild(alertDiv);
+                
+                // Auto-dismiss after 5 seconds
+                setTimeout(() => {
+                    const bsAlert = new bootstrap.Alert(alertDiv);
+                    bsAlert.close();
+                }, 5000);
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro-Vet Locator | CropCare</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/vets.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="vet-container">
+        <!-- Header with Search -->
+        <header class="vet-header">
+            <h1><i class="fas fa-clinic-medical"></i> Nearby Agro-Vet Services</h1>
+            <div class="search-container">
+                <input type="text" id="vetSearch" placeholder="Search by name or specialty...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+                <div class="filter-dropdown">
+                    <select id="specialtyFilter">
+                        <option value="all">All Specialties</option>
+                        <option value="poultry">Poultry</option>
+                        <option value="dairy">Dairy</option>
+                        <option value="crops">Crops</option>
+                        <option value="general">General</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="vet-content">
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="vetMap"></div>
+                <div class="map-controls">
+                    <button id="locateMe"><i class="fas fa-location-arrow"></i> Locate Me</button>
+                    <button id="refreshVets"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+            </div>
+
+            <!-- Vet Listings -->
+            <div class="vet-listings">
+                <div class="sort-options">
+                    <span>Sort by:</span>
+                    <button class="sort-btn active" data-sort="distance">Distance</button>
+                    <button class="sort-btn" data-sort="rating">Rating</button>
+                    <button class="sort-btn" data-sort="name">Name</button>
+                </div>
+
+                <div class="vet-cards" id="vetCards">
+                    <!-- Vet cards will be dynamically inserted here by JavaScript -->
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading nearby agro-vets...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vet Details Modal -->
+    <div class="vet-modal" id="vetModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalVetName"></h2>
+                <div class="rating-stars" id="modalRating"></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-left">
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="modalAddress"></span></p>
+                    <p><i class="fas fa-phone"></i> <span id="modalPhone"></span></p>
+                    <p><i class="fas fa-clock"></i> <span id="modalHours"></span></p>
+                    <p><i class="fas fa-stethoscope"></i> Specialties: <span id="modalSpecialties"></span></p>
+                    <div class="services" id="modalServices"></div>
+                </div>
+                <div class="modal-right">
+                    <div id="modalMap"></div>
+                    <div class="action-buttons">
+                        <button class="call-btn"><i class="fas fa-phone"></i> Call Now</button>
+                        <button class="directions-btn"><i class="fas fa-directions"></i> Get Directions</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-reviews">
+                <h3>Reviews</h3>
+                <div class="reviews-container" id="modalReviews"></div>
+                <button class="add-review-btn">Add Your Review</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script>
+    <script src="{{ url_for('static', filename='js/vets.js') }}"></script>
+    {% extends 'base.html' %}
+</body>
+</html>

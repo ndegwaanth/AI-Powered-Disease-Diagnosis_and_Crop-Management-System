@@ -1,0 +1,92 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.homepage') }}">
+            <i class="fas fa-leaf me-2"></i>CropGuard
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('main.homepage') %}active{% endif %}" 
+                       href="{{ url_for('main.homepage') }}">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('main.diagnose') %}active{% endif %}" 
+                       href="{{ url_for('main.diagnose') }}">
+                        <i class="fas fa-camera me-1"></i>Diagnose
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('main.history') %}active{% endif %}" 
+                       href="{{ url_for('main.history') }}">
+                        <i class="fas fa-history me-1"></i>History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('main.forum') %}active{% endif %}" 
+                       href="{{ url_for('main.forum') }}">
+                        <i class="fas fa-users me-1"></i>Community
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('main.vets') %}active{% endif %}" 
+                       href="{{ url_for('main.vets') }}">
+                        <i class="fas fa-map-marker-alt me-1"></i>Agro-Vets
+                    </a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user-circle me-1"></i>
+                        {% if current_user.is_authenticated %}
+                            {{ current_user.username }}
+                        {% else %}
+                            Account
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        {% if current_user.is_authenticated %}
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.profile') }}">
+                                    <i class="fas fa-user me-2"></i>Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.alerts') }}">
+                                    <i class="fas fa-bell me-2"></i>Alerts
+                                    <span class="badge bg-danger rounded-pill ms-2">3</span>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.login') }}">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('main.register') }}">
+                                    <i class="fas fa-user-plus me-2"></i>Register
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
